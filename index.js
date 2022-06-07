@@ -2,9 +2,9 @@ const express = require("express");
 const app = express.Router();
 const port = 3000;
 
-const pessoas = require("./api/listaPessoas");
-const usuarios = require("./api/listaUsuarios");
-const boletos = require("./api/listaBoletos");
+const pessoas = require("./api/pessoas");
+const usuarios = require("./api/usuarios");
+const boletos = require("./api/boletos");
 
 app.use("/api/pessoas", pessoas);
 app.use("/api/usuarios", usuarios);;
