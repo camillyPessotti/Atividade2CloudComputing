@@ -1,8 +1,5 @@
 const express = require("express");
-const app = express();
-const port = 3000;
-
-app.use(express.json());
+const router = express.Router();
 
 const listaUsuarios = [
     { id: 1, nome: "Camilly", senha: "123" },
@@ -10,51 +7,69 @@ const listaUsuarios = [
     { id: 3, nome: "Leonardo", senha: "123" }
 ];
 
+
 function pegarUsuarios() {
-    app.get('/api/usuarios', (req, res) => {
-        res.send(listaUsuarios);
-    });
+    return listaUsuarios;
 };
 
 function pegarUsuarioID() {
-    app.get('/api/usuarios/:id', (req, res) => {
-        const id = req.params.id;
-        const usuario = listaUsuarios.find(u => u.id == id);
-        res.send(usuario);
-    });
+    const id = req.params.id;
+    const usuario = listaUsuarios.find(u => u.id == id);
+    return usuario;
 };
 
-function adicionarUsuario(){
-    app.post('/api/usuarios', (req, res) => {
-        const usuario = req.body;
-        usuario.id = listaUsuarios.length + 1;
-        listaUsuarios.push(usuario);
-        res.json(usuario);
-    });
+function adicionarUsuario(usuario) {
+    usuario.id = listaUsuarios.length + 1;
+    listaUsuarios.push(usuario);
+        return usuario;
 };
 
-function editarUsuario(){
-    app.put('/api/usuarios/:id', (req, res) => {
-        const id = req.params.id;
-        const usuario = req.body;
-        const index = listaUsuarios.findIndex(u => u.id == id);
-        usuario.id = id;
-        listaUsuarios[index] = usuario;
-        res.json(usuario);
-    });
+function editarUsuario(usuario) {
+    listaUsuarios[index] = usuario;
 };
 
-function excluirUsuario(){
-    app.delete('/api/usuarios/:id', (req, res) => {
-        const id = req.params.id;
-        const index = listaUsuarios.findIndex(u => u.id == id);
-        listaUsuarios.splice(index, 1);
-        res.json(listaUsuarios);
-    });
+function excluirUsuario(usuario) {
+    listaUsuarios.splice(usuario, 1);
 };
 
-module.exports = router;
 
-app.listen(port, () => {
-    console.log(`App listening at https://localhost:${port}`);
+
+
+router.get("/", (req, res) => {
+    res.json(pegarUsuarios());
 });
+
+router.get("/:id", (req, res) => {
+    res.json(pegarUsuarioID(req));
+});
+
+router.post("/", (req, res) => {
+    const usuario = adicionarUsuario(req.body);
+    res.json(usuario);
+});
+
+router.put("/:id", (req, res) => {
+    const id = req.params.id;
+    const usuario = req.body;
+    const index = listaUsuarios.findIndex(u => u.id == id);
+    usuario.id = id;
+    editarPessoa(usuario, index);
+    res.json(listaUsuarios);
+});
+
+router.delete("/:id", (req, res) => {
+    const id = req.params.id;
+    const usuario = listaUsuarios.findIndex(u => u.id == id);
+    excluirBoleto(usuario);
+    res.json(listaUsuarios);
+});
+
+
+module.exports = {
+    router,
+    pegarUsuarios,
+    pegarUsuarioID,
+    adicionarUsuario,
+    editarUsuario,
+    excluirUsuario
+};
