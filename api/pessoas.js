@@ -7,6 +7,8 @@ const listaPessoas = [
     { id: 3, nome: "Leonardo", cpf: "123.456.789.10" }
 ];
 
+const listaBoletosPessoa = [];
+
 function pegarPessoas() {
     return listaPessoas;
 };
@@ -71,5 +73,6 @@ module.exports = {
     pegarPessoaID,
     adicionarPessoa,
     editarPessoa,
-    excluirPessoa
+    excluirPessoa,
+    listaBoletosPessoa
 };

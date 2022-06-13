@@ -7,6 +7,8 @@ const listaUsuarios = [
     { id: 3, nome: "Leonardo", senha: "123" }
 ];
 
+const listaBoletosUsuario = [];
+
 
 function pegarUsuarios() {
     return listaUsuarios;
@@ -72,5 +74,6 @@ module.exports = {
     pegarUsuarioID,
     adicionarUsuario,
     editarUsuario,
-    excluirUsuario
+    excluirUsuario,
+    listaBoletosUsuario
 };
