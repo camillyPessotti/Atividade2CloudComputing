@@ -7,32 +7,31 @@ const listaPessoas = [
     { id: 3, nome: "Leonardo", cpf: "123.456.789.10" }
 ];
 
-
 function pegarPessoas() {
     return listaPessoas;
 };
 
-function pegarPessoaID() {
-    const id = req.params.id;
+function pegarPessoaID(id) {
     const pessoa = listaPessoas.find(p => p.id == id);
     return pessoa;
 };
 
 function adicionarPessoa(pessoa) {
+    console.log(pessoa);
     pessoa.id = listaPessoas.length + 1;
     listaPessoas.push(pessoa);
-        return pessoa;
+    return pessoa;
 };
 
-function editarPessoa(pessoa) {
+function editarPessoa(pessoa, id) {
+    const index = listaPessoas.findIndex(p => p.id == id);
+    pessoa.id = id;
     listaPessoas[index] = pessoa;
 };
 
-function excluirPessoa(pessoa) {
-    listaPessoas.splice(pessoa, 1);
+function excluirPessoa(index) {
+    listaPessoas.splice(index, 1);
 };
-
-
 
 
 router.get("/", (req, res) => {
@@ -40,27 +39,26 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-    res.json(pegarPessoaID(req));
+    res.json(pegarPessoaID(req.params.id));
 });
 
 router.post("/", (req, res) => {
-    const pessoa = adicionarPessoa(req.body);
-    res.json(pessoa);
+    console.log(req.body);
+    const pessoa = req.body;
+    res.json(adicionarPessoa(pessoa));
 });
 
 router.put("/:id", (req, res) => {
     const id = req.params.id;
     const pessoa = req.body;
-    const index = listaPessoas.findIndex(p => p.id == id);
-    pessoa.id = id;
-    editarPessoa(pessoa, index);
+    editarPessoa(pessoa, id);
     res.json(listaPessoas);
 });
 
 router.delete("/:id", (req, res) => {
     const id = req.params.id;
-    const pessoa = listaPessoas.findIndex(p => p.id == id);
-    excluirBoleto(pessoa);
+    const index = listaPessoas.findIndex(p => p.id == id);
+    excluirPessoa(index);
     res.json(listaPessoas);
 });
 

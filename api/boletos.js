@@ -12,8 +12,7 @@ function pegarBoletos() {
     return listaBoletos;
 };
 
-function pegarBoletoID() {
-    const id = req.params.id;
+function pegarBoletoID(id) {
     const boleto = listaBoletos.find(b => b.id == id);
     return boleto;
 };
@@ -21,18 +20,18 @@ function pegarBoletoID() {
 function adicionarBoleto(boleto) {
     boleto.id = listaBoletos.length + 1;
     listaBoletos.push(boleto);
-        return boleto;
+    return boleto;
 };
 
-function editarBoleto(boleto) {
+function editarBoleto(boleto, id) {
+    const index = listaBoletos.findIndex(b => b.id == id);
+    boleto.id = id;
     listaBoletos[index] = boleto;
 };
 
-function excluirBoleto(boleto) {
-    listaBoletos.splice(boleto, 1);
+function excluirBoleto(index) {
+    listaBoletos.splice(index, 1);
 };
-
-
 
 
 router.get("/", (req, res) => {
@@ -40,27 +39,26 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-    res.json(pegarBoletoID(req));
+    res.json(pegarBoletoID(req.params.id));
 });
 
 router.post("/", (req, res) => {
-    const boleto = adicionarBoleto(req.body);
+    const boleto = req.body
+    boleto = adicionarBoleto(boleto);
     res.json(boleto);
 });
 
 router.put("/:id", (req, res) => {
     const id = req.params.id;
     const boleto = req.body;
-    const index = listaBoletos.findIndex(b => b.id == id);
-    boleto.id = id;
-    editarBoleto(boleto, index);
+    editarBoleto(boleto, id);
     res.json(listaBoletos);
 });
 
 router.delete("/:id", (req, res) => {
     const id = req.params.id;
-    const boleto = listaBoletos.findIndex(b => b.id == id);
-    excluirBoleto(boleto);
+    const index = listaBoletos.findIndex(b => b.id == id);
+    excluirBoleto(index);
     res.json(listaBoletos);
 });
 

@@ -12,8 +12,7 @@ function pegarUsuarios() {
     return listaUsuarios;
 };
 
-function pegarUsuarioID() {
-    const id = req.params.id;
+function pegarUsuarioID(id) {
     const usuario = listaUsuarios.find(u => u.id == id);
     return usuario;
 };
@@ -21,18 +20,18 @@ function pegarUsuarioID() {
 function adicionarUsuario(usuario) {
     usuario.id = listaUsuarios.length + 1;
     listaUsuarios.push(usuario);
-        return usuario;
+    return usuario;
 };
 
-function editarUsuario(usuario) {
+function editarUsuario(usuario, id) {
+    const index = listaUsuarios.findIndex(u => u.id == id);
+    usuario.id = id;
     listaUsuarios[index] = usuario;
 };
 
-function excluirUsuario(usuario) {
-    listaUsuarios.splice(usuario, 1);
+function excluirUsuario(index) {
+    listaUsuarios.splice(index, 1);
 };
-
-
 
 
 router.get("/", (req, res) => {
@@ -40,27 +39,26 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-    res.json(pegarUsuarioID(req));
+    res.json(pegarUsuarioID(req.params.id));
 });
 
 router.post("/", (req, res) => {
-    const usuario = adicionarUsuario(req.body);
+    const usuario = req.body
+    usuario = adicionarUsuario(usuario);
     res.json(usuario);
 });
 
 router.put("/:id", (req, res) => {
     const id = req.params.id;
     const usuario = req.body;
-    const index = listaUsuarios.findIndex(u => u.id == id);
-    usuario.id = id;
-    editarPessoa(usuario, index);
+    editarUsuario(usuario, id);
     res.json(listaUsuarios);
 });
 
 router.delete("/:id", (req, res) => {
     const id = req.params.id;
-    const usuario = listaUsuarios.findIndex(u => u.id == id);
-    excluirBoleto(usuario);
+    const index = listaUsuarios.findIndex(u => u.id == id);
+    excluirUsuario(index);
     res.json(listaUsuarios);
 });
 
