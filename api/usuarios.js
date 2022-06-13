@@ -44,8 +44,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     const usuario = req.body
-    usuario = adicionarUsuario(usuario);
-    res.json(usuario);
+    if (usuario.nome == "" || usuario.nome == null || usuario.senha == "" || usuario.senha == null) {
+        res.status(400).send("Campos obrigtórios encontram-se vazios!")
+    } else {
+        res.json(adicionarUsuario(usuario));
+    }
 });
 
 router.put("/:id", (req, res) => {

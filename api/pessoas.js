@@ -17,7 +17,6 @@ function pegarPessoaID(id) {
 };
 
 function adicionarPessoa(pessoa) {
-    console.log(pessoa);
     pessoa.id = listaPessoas.length + 1;
     listaPessoas.push(pessoa);
     return pessoa;
@@ -43,9 +42,12 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    console.log(req.body);
     const pessoa = req.body;
-    res.json(adicionarPessoa(pessoa));
+    if (pessoa.nome == "" || pessoa.nome == null || pessoa.cpf == "" || pessoa.cpf == null) {
+        res.status(400).send("Campos obrigtórios encontram-se vazios!")
+    } else {
+        res.json(adicionarPessoa(pessoa));
+    };
 });
 
 router.put("/:id", (req, res) => {
